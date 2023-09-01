@@ -1,12 +1,22 @@
 use empresa_bibliotecas;
 
+SHOW VARIABLES WHERE VARIABLE_NAME IN('hostname','port');
+
+SELECT * FROM usuario;
+
+CREATE TABLE rol (
+	codigo integer primary key not null,
+    valor varchar(50) not null
+);
+
 CREATE TABLE usuario (
   codigo INTEGER PRIMARY KEY not null auto_increment,
   nombre varchar(50) not null,
   username varchar(45) not null,
   password varchar(45) not null,
-  rol varchar(45) not null,
-  email varchar(100)
+  rol integer not null,
+  email varchar(100),
+  FOREIGN KEY (rol) REFERENCES rol(codigo)
 );
 
 CREATE TABLE usuario_final (
@@ -54,12 +64,23 @@ create table unidades_libro (
   FOREIGN KEY (isbn) REFERENCES libro(isbn)
 );
 
--- INSERT INTO user (name, username, password, rol, email) VALUES
--- ('Chris', 'chris07', '12345', 'admin', 'chris@gmail.com'),
--- ('Marck', 'marchhk', 'pass', 'final', 'marchhk@gmail.com'),
--- ('Dani', 'mdani', 'twice', 'transportista', 'mdani@gmail.com'),
--- ('veronica', 'vero', '54321', 'secretario', 'vero@gmail.com'),
--- ('karol', 'karolg', '123', 'final', 'karolg@gmail.com');
+INSERT INTO rol (codigo, valor) values
+(1, "usuario final"),
+(2, "usuario admin"),
+(3, "usuario de secretaria"),
+(4, "usuario transportista");
+
+INSERT INTO usuario (codigo, nombre, username, password, rol, email) VALUES
+(1,'Chris', 'chris07', '12345', 1, 'chris@gmail.com'),
+(2,'Marck', 'marchhk', 'pass', 2, 'marchhk@gmail.com'),
+(3,'Dani', 'mdani', 'twice', 4, 'mdani@gmail.com'),
+(4,'veronica', 'vero', '54321', 3, 'vero@gmail.com'),
+(5,'karol', 'karolg', '123', 2, 'karolg@gmail.com');
+
+INSERT INTO usuario (codigo, nombre, username, password, rol, email) VALUES
+(1, 'Chris', 'admin', '12345', 2, 'chris@gmail.com');
+
+SELECT * FROM usuario where (username="chris07" and password = "12345");
 
 -- INSERT INTO user_final (id, suscrito, anulado) VALUES (2, 0, 1), (5, 1, 0);
 

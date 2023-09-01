@@ -4,36 +4,111 @@
  */
 package com.servlets;
 
+import com.db.usuario.Usuario;
+import com.db.usuario.UsuarioDB;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
-@WebServlet(name = "SvLogin", urlPatterns = {"/SvLogin"})
+@WebServlet(name = "SvLogin", urlPatterns = {"/login"})
 public class SvLogin extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
+    UsuarioDB usuarioDB;
+    Usuario usuario;
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("coneccion");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        try {
+
+            usuarioDB = new UsuarioDB();
+
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+
+            usuario = usuarioDB.verificarLoginInformation(username, password);
+
+            if (usuario != null) {
+                // login session
+                HttpSession session = request.getSession();
+                session.setAttribute("usuario", usuario);
+                
+                String path = loadModuloSegunRol(usuario.getRol());
+                request.setAttribute("usuario", usuario);
+                //Forward
+                RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher(this.getServletContext().getContextPath() + path);
+                dispatcher.forward(request, response);
+            } else {
+                request.setAttribute("usuario", null);
+                //Forward
+                RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher(this.getServletContext().getContextPath() + "/login");
+                dispatcher.forward(request, response);
+            }
+
+        } catch (SQLException ex) {
+            request.setAttribute("errorMessage", ex.getMessage());
+            //Forward
+            RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
+            dispatcher.forward(request, response);
+        }
+
     }
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    private String loadModuloSegunRol(int rol) {
+        switch (rol) {
+            case 1:
+                loadFinal();
+                return "/dashboard";
 
+            case 2:
+                loadAdmin();
+                return "/admin";
+
+            case 3:
+                loadSecretaria();
+                return "/secretaria";
+
+            case 4:
+                loadTransportista();
+                return "/transportista";
+
+            default:
+                throw new AssertionError();
+        }
+    }
+
+    private void loadFinal() {
+        System.out.println("es final");
+
+    }
+
+    private void loadAdmin() {
+
+        System.out.println("admin");
+    }
+
+    private void loadSecretaria() {
+        System.out.println("es secretaria");
+
+    }
+
+    private void loadTransportista() {
+        System.out.println("es transportista");
+
+    }
 }
