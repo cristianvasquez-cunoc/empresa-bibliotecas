@@ -1,4 +1,3 @@
-
 package com.servlets;
 
 import com.db.usuario.Usuario;
@@ -18,15 +17,30 @@ public class SvLogin extends HttpServlet {
 
     UsuarioDB usuarioDB;
     Usuario usuario;
-    
+
+    String estado; // logged | unlogged
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        estado = request.getParameter("estado");
+
+
+        if (estado.equals("unlogged")) {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", null);
+            RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
+                dispatcher.forward(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        estado = request.getParameter("estado");
 
         try {
 
@@ -41,7 +55,8 @@ public class SvLogin extends HttpServlet {
                 // login session
                 HttpSession session = request.getSession();
                 session.setAttribute("usuario", usuario);
-                
+                estado = "logged";
+
                 String path = getPathByRol(usuario.getRol());
                 request.setAttribute("usuario", usuario);
                 //Forward

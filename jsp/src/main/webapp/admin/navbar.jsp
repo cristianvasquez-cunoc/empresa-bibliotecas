@@ -15,6 +15,6 @@
                 </li>
             </ul>
         </div>
-        <a class="nav-link mr-4" href="${pageContext.request.contextPath}/login">Sign Out</a>
+        <a class="nav-link mr-4" href="${pageContext.request.contextPath}/login?estado=unlogged">Sign Out</a>
     </div>
 </nav>
