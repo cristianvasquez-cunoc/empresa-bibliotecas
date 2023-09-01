@@ -3,16 +3,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<% if (session.getAttribute("usuario") != null) response.sendRedirect("/"); %>
+<% if (session.getAttribute("usuario") != null)
+        response.sendRedirect("/");%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
-
-        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+        <jsp:include page="/includes/resources.jsp"/>
     </head>
 
-    <body class="overflow-hidden">
+    <body class="overflow-hidden" data-bs-theme="dark">
 
         <div class="row">
 
@@ -49,6 +49,5 @@
 
         </div>
 
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
     </body>
 </html>

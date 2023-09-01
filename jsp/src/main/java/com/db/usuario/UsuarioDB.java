@@ -10,7 +10,6 @@ public class UsuarioDB {
 
     private final String INSERT = "INSERT INTO usuario (codigo, nombre, username, password, rol, email) VALUES (?, ?, ?, ?, ?, ?);";
     private final String SELECT_USER = "SELECT * FROM usuario WHERE (username = ? and password = ?)";
-    private final String SELECT_BY_CARNET = "SELECT * FROM estudiante WHERE carnet = ?";
 
     private Connection conexion;
 

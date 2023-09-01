@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package com.servlets;
 
 import com.db.usuario.Usuario;
@@ -45,7 +42,7 @@ public class SvLogin extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("usuario", usuario);
                 
-                String path = loadModuloSegunRol(usuario.getRol());
+                String path = getPathByRol(usuario.getRol());
                 request.setAttribute("usuario", usuario);
                 //Forward
                 RequestDispatcher dispatcher = getServletContext()
@@ -69,22 +66,18 @@ public class SvLogin extends HttpServlet {
 
     }
 
-    private String loadModuloSegunRol(int rol) {
+    private String getPathByRol(int rol) {
         switch (rol) {
             case 1:
-                loadFinal();
                 return "/dashboard";
 
             case 2:
-                loadAdmin();
                 return "/admin";
 
             case 3:
-                loadSecretaria();
                 return "/secretaria";
 
             case 4:
-                loadTransportista();
                 return "/transportista";
 
             default:
@@ -92,23 +85,4 @@ public class SvLogin extends HttpServlet {
         }
     }
 
-    private void loadFinal() {
-        System.out.println("es final");
-
-    }
-
-    private void loadAdmin() {
-
-        System.out.println("admin");
-    }
-
-    private void loadSecretaria() {
-        System.out.println("es secretaria");
-
-    }
-
-    private void loadTransportista() {
-        System.out.println("es transportista");
-
-    }
 }
