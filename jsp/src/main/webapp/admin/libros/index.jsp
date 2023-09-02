@@ -1,9 +1,18 @@
 
 
+<%@page import="com.db.usuario.Usuario"%>
 <%@page import="classes.Libro"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+    if (usuario == null || usuario.getRol() != 2)
+        response.sendRedirect("/");
+
+    else {
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -31,7 +40,9 @@
                         <li class="card-text">ISBN: <%= libro.getIsbn()%></li>
                         <li class="card-text">Costo: Q <%= libro.getCosto()%></li>
                     </ul>
-                    <button type="button" class="btn btn-secondary">Ver unidades disponibles</button>
+                    <a href="/admin/libros/unidades-por-biblioteca?isbn=<%= libro.getIsbn()%>" type="button" class="btn btn-primary">
+                        Ver unidades disponibles
+                    </a>
                 </div>
             </div>
 
@@ -41,3 +52,6 @@
         </section>
     </body>
 </html>
+<%
+    };
+%>

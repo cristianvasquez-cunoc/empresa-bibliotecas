@@ -2,13 +2,13 @@
 package classes;
 
 public class Libro {
-    int isbn;
+    String isbn;
     String nombre;
     String autor;
     String categoria;
     double costo;
 
-    public Libro(int isbn, String nombre, String autor, String categoria, double costo) {
+    public Libro(String isbn, String nombre, String autor, String categoria, double costo) {
         this.isbn = isbn;
         this.nombre = nombre;
         this.autor = autor;
@@ -20,7 +20,7 @@ public class Libro {
         return nombre;
     }
 
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 

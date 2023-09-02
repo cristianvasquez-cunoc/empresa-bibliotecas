@@ -106,6 +106,10 @@ INSERT INTO usuario (nombre, username, password, rol, email) VALUES
 --   (4, 'Autoayuda', 'Libros de autoayuda y desarrollo personal.'),
 --   (5, 'Cocina', 'Libros de cocina y recetas.');
 
+SELECT l.isbn, l.nombre, l.autor, l.costo, c.name as categoria
+FROM libro as l
+inner join categoria as c 
+on l.categoria = c.codigo;
   
   INSERT INTO libro (isbn, nombre, autor, categoria, costo)
 VALUES
@@ -125,61 +129,21 @@ VALUES
   (14, 'El poder del ahora', 'Eckhart Tolle', 4, 11.25),
   (15, 'La cocina al minuto', 'Nitza Villapol', 5, 8.99);
   
--- INSERT INTO user_final (id, suscrito, anulado) VALUES (2, 0, 1), (5, 1, 0);
+  
+INSERT INTO biblioteca (nombre, direccion)
+VALUES
+  ('Biblioteca 1', 'Guatemala'),
+  ('Biblioteca 2', 'Sacatepéquez'),
+  ('Biblioteca 3', 'Quetzaltenango'),
+  ('Biblioteca 4', 'Huehuetenango'),
+  ('Biblioteca 5', 'Izabal'),
+  ('Biblioteca 6', 'Chimaltenango');
+  
 
--- select password from user where username = 'chris07';
+SELECT b.nombre, b.direccion, ub.unidades FROM biblioteca as b INNER JOIN unidades_libro as ub ON (b.codigo = ub.biblioteca) INNER JOIN libro as l ON (l.isbn = ub.isbn) WHERE l.isbn = 1;
 
--- SELECT u.name, u.username, u.password, u.rol, u.email, f.suscrito, f.anulado
--- FROM user as u
--- INNER JOIN user_final as f
--- ON u.id = f.id;
+SELECT * FROM empresa_bibliotecas.unidades_libro;
 
--- insert into categoria (id, name, description) values
--- ('1', 'thriller', 'El thriller es un género literario y cinematográfico que se caracteriza por mantener una alta tensión emocional y una trama llena de giros inesperados.'),
--- ('2', 'divulgacion', 'objetivo es hacer llegar un mensaje con ideas, conceptos o hechos sobre un tema específico a personas no formadas en ese tema.');
-
--- insert into libro (isbn, name, autor, categoria) values
--- ('123', 'breve historia del tiempo', 'Stephen Hawking', '2'),
--- ('321', 'IT', 'Stephen King', '1');
-
--- select * from libro;
-
--- SELECT l.isbn, l.name, l.autor, c.name
--- FROM libro as l
--- INNER JOIN categoria as c
--- ON l.categoria = c.id;
-
--- insert into biblioteca (name, direccion) values
--- ('bartolome', 'xela'),
--- ('municipal', 'antigua');
-
--- ('veronica', 'vero', '54321', 'secretario', 'vero@gmail.com')
--- insert into secretario (id, biblioteca) values ('4', '1');
-
--- SELECT * from secretario;
-
--- SELECT us.name, us.username, us.password, us.rol, us.email, bib.name
--- FROM secretario as sec
--- INNER JOIN user as us
--- ON sec.id = us.id
--- INNER JOIN biblioteca as bib;
-
--- SELECT u.name, u.username, b.name FROM secretario as s
---   INNER JOIN user as u
---     ON u.id = s.id
---   INNER JOIN biblioteca as b
---     ON s.biblioteca = b.id;
-
-
--- INSERT INTO unidades_libro (biblioteca_id, isbn, unidades) values
---   (1, 123, 10),
---   (1, 321, 7),
---   (2, 123, 5);
---  
--- update unidades_libro SET unidades = 45 where (isbn = 123 AND biblioteca_id = 1);
---  
--- SELECT b.name, l.name, ul.unidades from unidades_libro as ul
---   INNER JOIN libro as l
---     ON l.isbn = ul.isbn
---   INNER JOIN biblioteca as b
---     ON b.id = ul.biblioteca_id;
+UPDATE unidades_libro
+SET unidades = 10
+WHERE id = 1;

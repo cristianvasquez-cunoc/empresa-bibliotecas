@@ -36,12 +36,8 @@ public class SvAdminLibros extends HttpServlet {
                     .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/libros/");
             dispatcher.forward(request, response);
             
-        }  catch (SQLException ex) {
-            request.setAttribute("errorMessage", ex.getMessage());
-            //Forward
-            RequestDispatcher dispatcher = getServletContext()
-                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
-            dispatcher.forward(request, response);
+        }  catch (Exception ex) {
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
