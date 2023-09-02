@@ -13,12 +13,14 @@
         response.sendRedirect("/");
 
     else {
+
 %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Unidades por biblioteca</title>
         <jsp:include page="/includes/resources.jsp"/>
+
     </head>
     <body data-bs-theme="dark">
         <jsp:include page="/admin/navbar.jsp"/>
@@ -37,8 +39,7 @@
         </div>
         <section class="container" style="display: flex;flex-wrap: wrap;justify-content: center;">
 
-            <%
-                ArrayList<UnidadesLibroBiblioteca> ulbs = (ArrayList<UnidadesLibroBiblioteca>) request.getAttribute("ulbs");
+            <%                ArrayList<UnidadesLibroBiblioteca> ulbs = (ArrayList<UnidadesLibroBiblioteca>) request.getAttribute("ulbs");
 
                 for (int i = 0; i < ulbs.size(); i++) {
 
@@ -61,7 +62,7 @@
             <!-- Modal -->
             <div class="modal fade" id="biblioteca<%=i%>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <form class="modal-content" method="POST" action="${pageContext.request.contextPath}/admin/libros/unidades-por-biblioteca" >
+                    <form class="modal-content" method="POST" action="${pageContext.request.contextPath}/admin/libros/unidades-por-biblioteca?id=<%= ulb.getId()%>&isbn=<%= ulb.getIsbn()%>">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="staticBackdropLabel"><%= ulb.getNombre()%></h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -73,9 +74,7 @@
                                 <input type="text" required class="form-control" name="unidades" value="<%= ulb.getUnidades()%>" aria-label="unidades" aria-describedby="basic-addon1">
                             </div>
                         </div>
-                        <input type="text" class="form-control d-none" name="id" value="<%= ulb.getId()%>" aria-label="id" aria-describedby="basic-addon1">
-                        <input type="text" class="form-control d-none" name="isbn" value="<%= ulb.getIsbn()%>" aria-label="id" aria-describedby="basic-addon1">
-                        <div class="form-floating mx-3">
+                        <div class="form-floating mx-3 mb-3">
                             <textarea required class="form-control" placeholder="Motivo por el cual se está realizando el ajuste" id="floatingTextarea"></textarea>
                             <label  for="floatingTextarea">Justificacion</label>
                         </div>
@@ -92,6 +91,7 @@
                 }
             %>
         </section>
+        
     </body>
 </html>
 <%

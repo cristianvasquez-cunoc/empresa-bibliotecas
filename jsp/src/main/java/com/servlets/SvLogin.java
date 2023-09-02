@@ -41,7 +41,13 @@ public class SvLogin extends HttpServlet {
             throws ServletException, IOException {
 
         estado = request.getParameter("estado");
-
+        
+        if(estado != null && estado.equals("logged")) {
+            RequestDispatcher dispatcher = getServletContext()
+                        .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
+                dispatcher.forward(request, response);
+                
+        }else {
         try {
 
             usuarioDB = new UsuarioDB();
@@ -65,9 +71,10 @@ public class SvLogin extends HttpServlet {
                 dispatcher.forward(request, response);
             } else {
                 request.setAttribute("usuario", null);
+                estado = "unlogged";
                 //Forward
                 RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher(this.getServletContext().getContextPath() + "/login");
+                        .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
                 dispatcher.forward(request, response);
             }
 
@@ -77,6 +84,7 @@ public class SvLogin extends HttpServlet {
             RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
             dispatcher.forward(request, response);
+        }
         }
 
     }

@@ -147,3 +147,10 @@ SELECT * FROM empresa_bibliotecas.unidades_libro;
 UPDATE unidades_libro
 SET unidades = 10
 WHERE id = 1;
+
+update unidades_libro set unidades = 10 where id = 41;
+-- id 41 unidades = 14
+
+select * from categoria;
+
+insert into categoria (name, description) values ('Romance', 'Libros de historias de amor y relaciones.');
