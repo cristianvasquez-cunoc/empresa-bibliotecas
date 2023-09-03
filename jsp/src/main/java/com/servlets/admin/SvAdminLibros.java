@@ -1,4 +1,4 @@
-package com.servlets;
+package com.servlets.admin;
 
 import classes.Libro;
 import com.db.administacion.Administracion;
@@ -30,6 +30,7 @@ public class SvAdminLibros extends HttpServlet {
             ArrayList<Libro> libros = adminDB.getAllLibros();
             
             request.setAttribute("libros", libros);
+            request.setAttribute("libroModificado", false);
             
             RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/libros/");

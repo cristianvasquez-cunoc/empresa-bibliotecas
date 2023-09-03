@@ -7,13 +7,15 @@ public class Libro {
     String autor;
     String categoria;
     double costo;
+    int codigoCategoria;
 
-    public Libro(String isbn, String nombre, String autor, String categoria, double costo) {
+    public Libro(String isbn, String nombre, String autor, String categoria, double costo, int codigoCategoria) {
         this.isbn = isbn;
         this.nombre = nombre;
         this.autor = autor;
         this.categoria = categoria;
         this.costo = costo;
+        this.codigoCategoria = codigoCategoria;
     }
 
     public String getNombre() {
@@ -34,6 +36,10 @@ public class Libro {
 
     public double getCosto() {
         return costo;
+    }
+
+    public int getCodigoCategoria() {
+        return codigoCategoria;
     }
     
     

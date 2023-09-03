@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <nav class="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 z-3 shadow">
     <div class="container-fluid">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/">Biblioteca</a>
@@ -12,6 +12,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/admin/libros">Libros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/recepcion">Recepcion</a>
                 </li>
             </ul>
         </div>

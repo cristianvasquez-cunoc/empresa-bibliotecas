@@ -1,22 +1,18 @@
 
 
-const validarAgregarArchivos = () => {
+const validarLibro = () => {
 
-    const mensajeError = '';
+    let mensajeError = '';
 
     const seleccion = document.getElementById("seleccionCategoria");
-    const isbn = document.getElementById("isbn");
-    const costo = document.getElementById("costo");
-    
-
-    
+    const isbn = document.getElementById("isbn").value;
 
     if (seleccion.value === "Selecciona una opcion")
         mensajeError = 'Por favor selecciona una categoria.';
-    
-    if(parseInt(isbn) === NaN)
+
+    if (isNaN(parseInt(isbn)))
         mensajeError = 'El isbn debe ser un numero';
-    
+
 
     if (mensajeError != '') {
         Swal.fire({
@@ -25,11 +21,24 @@ const validarAgregarArchivos = () => {
             text: mensajeError
         })
         return false;
-    } else return true;
+    } else
+        return true;
 }
 
 let formAgregarLibro = document.getElementById("formAgregarLibro");
-formAgregarLibro.addEventListener("submit", (e) => {
-    if (!validarAgregarArchivos())
-        e.preventDefault();
-})
+if (formAgregarLibro != null) {
+
+    formAgregarLibro.addEventListener("submit", (e) => {
+        if (!validarLibro())
+            e.preventDefault();
+    })
+}
+
+let formModificarLibro = document.getElementById("formModificarLibro");
+
+if (formModificarLibro != null) {
+    formModificarLibro.addEventListener("submit", async e => {
+        if (!validarLibro())
+            e.preventDefault();
+    });
+}

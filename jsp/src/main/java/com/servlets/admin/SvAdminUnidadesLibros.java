@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-package com.servlets;
+
+package com.servlets.admin;
 
 import classes.Libro;
 import classes.UnidadesLibroBiblioteca;
@@ -51,7 +48,7 @@ public class SvAdminUnidadesLibros extends HttpServlet {
                 
                 loadBibliotecasByIsbn(request, response);
             } catch (Exception ex) {
-//                response.sendRedirect(request.getContextPath() + "/");
+                response.sendRedirect(request.getContextPath() + "/");
                 System.out.println("error");
             }
         }

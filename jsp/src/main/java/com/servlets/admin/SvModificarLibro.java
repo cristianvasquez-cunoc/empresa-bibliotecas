@@ -1,55 +1,60 @@
-package com.servlets;
 
-import classes.Biblioteca;
+package com.servlets.admin;
+
 import classes.Categoria;
 import classes.Libro;
-import classes.UnidadesLibroBiblioteca;
 import com.db.administacion.DBAdministracion;
-import com.db.usuario.Usuario;
-import com.db.usuario.UsuarioDB;
 import jakarta.servlet.RequestDispatcher;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet(name = "SvAdminAgregarLibro", urlPatterns = {"/admin/libros/agregar"})
-public class SvAdminAgregarLibro extends HttpServlet {
+@WebServlet(name = "SvModificarLibro", urlPatterns = {"/admin/libros/modificar"})
+public class SvModificarLibro extends HttpServlet {
 
     DBAdministracion adminDB;
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         try {
-
+            String isbn = request.getParameter("isbn");
+            
             adminDB = new DBAdministracion();
-
+            
+            Libro libro = adminDB.getLibroIsbn(isbn);
             ArrayList<Categoria> categorias = adminDB.getCategorias();
 
             request.setAttribute("categorias", categorias);
-            request.setAttribute("agregadoExitosamente", false);
+            request.setAttribute("libro", libro);
+                    request.setAttribute("libroModificado", false);
 
+            
             RequestDispatcher dispatcher = getServletContext()
-                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/libros/agregar-libro.jsp");
-            dispatcher.forward(request, response);
-
-        } catch (Exception ex) {
-            response.sendRedirect(request.getContextPath() + "/");
+                .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/libros/modificar-libro.jsp");
+        dispatcher.forward(request, response);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SvModificarLibro.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        
+        
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         int codigo;
 
         try {
@@ -69,26 +74,18 @@ public class SvAdminAgregarLibro extends HttpServlet {
                 codigo = Integer.parseInt(categoria);
             }
 
-            adminDB.insertLibro(isbn, nombre, autor, codigo, Double.parseDouble(costo));
+            adminDB.updateLibro(isbn, nombre, autor, String.valueOf(codigo), costo);
 
-            ArrayList<Categoria> categorias = adminDB.getCategorias();
-
-            request.setAttribute("categorias", categorias);
-            request.setAttribute("agregadoExitosamente", true);
+            ArrayList<Libro> libros = adminDB.getAllLibros();
             
-            // create unidades_libro
-            ArrayList<Biblioteca> bibliotecas = adminDB.getBibliotecas();
+        request.setAttribute("libros", libros);
+        request.setAttribute("libroModificado", true);
             
-            for (Biblioteca biblioteca : bibliotecas)
-                    adminDB.inserUnidadesLibro(biblioteca.getCodigo(), isbn);
-
             RequestDispatcher dispatcher = getServletContext()
-                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/libros/agregar-libro.jsp");
+                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/libros/");
             dispatcher.forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(SvAdminAgregarLibro.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
-
 }
