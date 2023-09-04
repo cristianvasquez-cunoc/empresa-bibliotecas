@@ -201,7 +201,7 @@ public class DBAdministracion {
     }
 
     public int insertCategoria(String nombre, String descripcion) {
-        int codigo = -1;  // Initialize with an invalid value
+        int codigo = -1;
 
         try {
             PreparedStatement insert = conexion.prepareStatement(INSERT_CATEGORIA, Statement.RETURN_GENERATED_KEYS);

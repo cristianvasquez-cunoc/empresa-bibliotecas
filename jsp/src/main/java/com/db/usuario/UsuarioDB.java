@@ -59,6 +59,7 @@ public class UsuarioDB {
                     result.getString("nombre"),
                     result.getString("username"),
                     result.getString("password"),
+                    result.getString("email"),
                     Integer.valueOf(result.getString("rol"))
             );
             

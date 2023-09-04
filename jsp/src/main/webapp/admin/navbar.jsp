@@ -1,5 +1,5 @@
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<nav class="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 z-3 shadow">
+<nav class="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 z-3 shadow ">
     <div class="container-fluid">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/">Biblioteca</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

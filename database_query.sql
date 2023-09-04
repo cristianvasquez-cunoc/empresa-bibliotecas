@@ -154,3 +154,5 @@ update unidades_libro set unidades = 10 where id = 41;
 select * from categoria;
 
 insert into categoria (name, description) values ('Romance', 'Libros de historias de amor y relaciones.');
+
+select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca;
