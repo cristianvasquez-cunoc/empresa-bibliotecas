@@ -23,7 +23,9 @@
 
     </head>
     <body data-bs-theme="dark">
-        <jsp:include page="/admin/navbar.jsp"/>
+        <jsp:include page="/admin/navbar.jsp">
+            <jsp:param name="active" value="libros" />
+        </jsp:include>
         <div class="container mb-4" >
             <h1 class="m-4 text-center">Existencias de '${libro.getNombre()}'</h1>
             <h4 >Detalles del libro</h4>

@@ -20,7 +20,9 @@
         <jsp:include page="/includes/resources.jsp"/>
     </head>
     <body data-bs-theme="dark">
-        <jsp:include page="/admin/navbar.jsp"/>
+        <jsp:include page="/admin/navbar.jsp">
+            <jsp:param name="active" value="libros" />
+        </jsp:include>
         <div class="d-flex flex-row align-items-center justify-content-center" style="">
 
             <h1 class="m-4 text-center">Lista de libros</h1>

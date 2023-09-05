@@ -1,8 +1,10 @@
-
+<%@page import="classes.Biblioteca"%>
+<%@page import="com.db.usuario.UsuarioRecepcion"%>
 <%@page import="com.db.usuario.Usuario"%>
+<%@page import="classes.Libro"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
 
@@ -11,21 +13,21 @@
 
     else {
 %>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Pagina administrador</title>
+        <title>Transporte</title>
         <jsp:include page="/includes/resources.jsp"/>
     </head>
-    <body data-bs-theme="dark">
+    <body data-bs-theme="dark" >
         <jsp:include page="/admin/navbar.jsp">
-            <jsp:param name="active" value="inicio" />
+            <jsp:param name="active" value="transporte" />
         </jsp:include>
-        <h1 class="container mt-4">Bienvenido usuario administrador <%=usuario.getNombre()%>!</h1>
+        
+        <script src="${pageContext.request.contextPath}/js/filtrarRecepcionistasBiblioteca.js"></script>
     </body>
 </html>
-
 <%
-    };
+    }
+    ;
 %>

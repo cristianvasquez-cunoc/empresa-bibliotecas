@@ -8,13 +8,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/admin/">Inicio</a>
+                    <a class="nav-link <%= (request.getParameter("active") != null && request.getParameter("active").equals("inicio")) ? "active" : "" %>" aria-current="page" href="${pageContext.request.contextPath}/admin/">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/libros">Libros</a>
+                    <a class="nav-link <%= (request.getParameter("active") != null && request.getParameter("active").equals("libros")) ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/libros">Libros</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/recepcion">Recepcion</a>
+                    <a class="nav-link <%= (request.getParameter("active") != null && request.getParameter("active").equals("recepcion")) ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/recepcion">Recepcion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= (request.getParameter("active") != null && request.getParameter("active").equals("transporte")) ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/transporte">Transporte</a>
                 </li>
             </ul>
         </div>

@@ -24,7 +24,9 @@
         <jsp:include page="/includes/resources.jsp"/>
     </head>
     <body data-bs-theme="dark" >
-        <jsp:include page="/admin/navbar.jsp"/>
+        <jsp:include page="/admin/navbar.jsp">
+            <jsp:param name="active" value="recepcion" />
+        </jsp:include>
         <div class="d-flex flex-row align-items-center justify-content-center" style="">
 
             <h1 class="m-4 text-center">Lista de usuarios de recepcion</h1>

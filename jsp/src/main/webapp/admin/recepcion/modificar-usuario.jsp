@@ -28,7 +28,9 @@
 
     </head>
     <body data-bs-theme="dark" >
-        <jsp:include page="/admin/navbar.jsp"/>
+        <jsp:include page="/admin/navbar.jsp">
+            <jsp:param name="active" value="recepcion" />
+        </jsp:include>
         <section class="container mt-3">
             <h1 class="h1 mb-3">Modificar usuario</h1>
 
