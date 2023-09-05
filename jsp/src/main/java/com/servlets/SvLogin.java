@@ -105,7 +105,7 @@ public class SvLogin extends HttpServlet {
                 return "/recepcion";
 
             case 4:
-                return "/transportista";
+                return "/transporte";
 
             default:
                 throw new AssertionError();

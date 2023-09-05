@@ -1,5 +1,3 @@
-
-
 <%@page import="classes.Biblioteca"%>
 <%@page import="com.db.usuario.UsuarioRecepcion"%>
 <%@page import="classes.Categoria"%>
@@ -16,32 +14,32 @@
 
     else {
 
-        UsuarioRecepcion usuarioR = (UsuarioRecepcion) request.getAttribute("usuarioR");
+        Usuario us = (Usuario) request.getAttribute("us");
 
 
 %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Modificar usuario</title>
+        <title>Modificar Usuario</title>
         <jsp:include page="/includes/resources.jsp"/>
 
     </head>
     <body data-bs-theme="dark" >
         <jsp:include page="/admin/navbar.jsp">
-            <jsp:param name="active" value="recepcion" />
+            <jsp:param name="active" value="transporte" />
         </jsp:include>
         <section class="container mt-3">
             <h1 class="h1 mb-3">Modificar usuario</h1>
 
-            <form method="POST" action="${pageContext.request.contextPath}/admin/recepcion/modificar-usuario?codigo=<%=usuarioR.getCodigo()%>" id="formModificarUsuario">
+            <form method="POST" action="${pageContext.request.contextPath}/admin/transporte/modificar-usuario?codigo=<%=us.getCodigo()%>" id="formModificarUsuario">
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" value="<%=usuarioR.getNombre()%>" required name="nombre" class="form-control" id="nombre" aria-describedby="nombre">
+                    <input type="text" value="<%=us.getNombre()%>" required name="nombre" class="form-control" id="nombre" aria-describedby="nombre">
                 </div>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" value="<%=usuarioR.getUsername()%>" required name="username" class="form-control" id="username" aria-describedby="username">
+                    <input type="text" value="<%=us.getUsername()%>" required name="username" class="form-control" id="username" aria-describedby="username">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
@@ -51,36 +49,14 @@
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo electronico</label>
-                    <input type="email" value="<%=usuarioR.getEmail()%>" required name="email" class="form-control" id="email" aria-describedby="email">
+                    <input type="email" value="<%=us.getEmail()%>" required name="email" class="form-control" id="email" aria-describedby="email">
                 </div>
 
-                <div class="mb-3">
-                    <label for="bibliotecas" class="form-label">Biblioteca</label>
-                    <select required class="form-select" aria-label="Default select example" id="bibliotecas" name="bibliotecas">
-                        <%
-                            ArrayList<Biblioteca> bibliotecas = (ArrayList<Biblioteca>) request.getAttribute("bibliotecas");
-                            for (Biblioteca bib : bibliotecas) {
-                                if (bib.getCodigo().equals(String.valueOf(usuarioR.getBibliotecaCodigo()))) {
-
-                        %>
-                        <option selected value="<%=bib.getCodigo()%>"><%=bib.getNombre()%></option>
-                        <%
-                        } else {
-                        %>
-                        <option value="<%=bib.getCodigo()%>"><%=bib.getNombre()%></option>
-                        <%
-                                }
-                            }
-
-                        %>
-                    </select>
-
-                </div>
                 <div class="mb-3">
                     <label for="estado" class="form-label">Estado del usuario</label>
                     <select required class="form-select" aria-label="Default select example" id="estado" name="estado">
-                        <%                            
-                            Boolean isActivo = (Boolean) usuarioR.isActivo();
+                        <%
+                            Boolean isActivo = (Boolean) us.isActivo();
                             if (isActivo) {
 
                         %>
@@ -109,7 +85,7 @@
 
             Swal.fire({
                 icon: 'success',
-                title: 'El usuario recepcionista se modificó exitosamente',
+                title: 'El usuario se modificó exitosamente',
                 timer: 2000
             })
 

@@ -14,6 +14,9 @@
                 case 3:
                     response.sendRedirect("/recepcion/");
                     break;
+                case 4:
+                    response.sendRedirect("/transporte/");
+                    break;
                 default:
                     throw new AssertionError();
             }

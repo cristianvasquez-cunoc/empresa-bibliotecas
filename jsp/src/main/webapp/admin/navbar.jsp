@@ -21,6 +21,6 @@
                 </li>
             </ul>
         </div>
-        <a class="nav-link" style="margin-right: 1.5rem" href="${pageContext.request.contextPath}/login?estado=unlogged">Sign Out</a>
+        <a class="nav-link" style="margin-right: 1.5rem" href="${pageContext.request.contextPath}/login?estado=unlogged">Cerrar sesion</a>
     </div>
 </nav>
