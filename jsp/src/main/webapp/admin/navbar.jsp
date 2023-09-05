@@ -22,6 +22,9 @@
                 <li class="nav-item">
                     <a class="nav-link <%= (request.getParameter("active") != null && request.getParameter("active").equals("sistema")) ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/sistema">Sistema</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= (request.getParameter("active") != null && request.getParameter("active").equals("solicitudes")) ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/solicitudes">Solicitudes</a>
+                </li>
             </ul>
         </div>
         <a class="nav-link" style="margin-right: 1.5rem" href="${pageContext.request.contextPath}/login?estado=unlogged">Cerrar sesion</a>
