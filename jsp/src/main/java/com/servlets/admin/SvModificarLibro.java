@@ -46,9 +46,6 @@ public class SvModificarLibro extends HttpServlet {
             Logger.getLogger(SvModificarLibro.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        
-        
     }
 
     @Override

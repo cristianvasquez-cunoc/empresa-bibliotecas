@@ -23,16 +23,15 @@ public class SvLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        estado = request.getParameter("estado");
 
+        estado = request.getParameter("estado");
 
         if (estado.equals("unlogged")) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", null);
             RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
-                dispatcher.forward(request, response);
+                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
+            dispatcher.forward(request, response);
         }
     }
 
@@ -41,50 +40,55 @@ public class SvLogin extends HttpServlet {
             throws ServletException, IOException {
 
         estado = request.getParameter("estado");
-        
-        if(estado != null && estado.equals("logged")) {
+
+        if (estado != null && estado.equals("logged")) {
             RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
-                dispatcher.forward(request, response);
-                
-        }else {
-        try {
+                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
+            dispatcher.forward(request, response);
 
-            usuarioDB = new UsuarioDB();
+        } else {
+            try {
 
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+                usuarioDB = new UsuarioDB();
 
-            usuario = usuarioDB.verificarLoginInformation(username, password);
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
 
-            if (usuario != null) {
-                // login session
-                HttpSession session = request.getSession();
-                session.setAttribute("usuario", usuario);
-                estado = "logged";
+                usuario = usuarioDB.verificarLoginInformation(username, password);
 
-                String path = getPathByRol(usuario.getRol());
-                request.setAttribute("usuario", usuario);
-                //Forward
-                RequestDispatcher dispatcher = getServletContext()
-                        .getRequestDispatcher(this.getServletContext().getContextPath() + path);
-                dispatcher.forward(request, response);
-            } else {
-                request.setAttribute("usuario", null);
-                estado = "unlogged";
+                if (usuario != null && usuario.isActivo()) {
+                    // login session
+                    HttpSession session = request.getSession();
+                    session.setAttribute("usuario", usuario);
+                    estado = "logged";
+
+                    String path = getPathByRol(usuario.getRol());
+                    request.setAttribute("usuario", usuario);
+                    session.setAttribute("errorMessage", "");
+
+                    //Forward
+                    RequestDispatcher dispatcher = getServletContext()
+                            .getRequestDispatcher(this.getServletContext().getContextPath() + path);
+                    dispatcher.forward(request, response);
+                } else {
+                    HttpSession session = request.getSession();
+                    request.setAttribute("usuario", null);
+                    session.setAttribute("errorMessage", "El usuario no existe o es una cuenta inactiva, por favor contacte al administrador");
+                    estado = "unlogged";
+
+                    //Forward
+                    RequestDispatcher dispatcher = getServletContext()
+                            .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
+                    dispatcher.forward(request, response);
+                }
+
+            } catch (SQLException ex) {
+                request.setAttribute("errorMessage", ex.getMessage());
                 //Forward
                 RequestDispatcher dispatcher = getServletContext()
                         .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
                 dispatcher.forward(request, response);
             }
-
-        } catch (SQLException ex) {
-            request.setAttribute("errorMessage", ex.getMessage());
-            //Forward
-            RequestDispatcher dispatcher = getServletContext()
-                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/");
-            dispatcher.forward(request, response);
-        }
         }
 
     }
@@ -98,7 +102,7 @@ public class SvLogin extends HttpServlet {
                 return "/admin";
 
             case 3:
-                return "/secretaria";
+                return "/recepcion";
 
             case 4:
                 return "/transportista";

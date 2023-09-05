@@ -3,8 +3,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<% if (session.getAttribute("usuario") != null)
-        response.sendRedirect("/");%>
+<% if (session.getAttribute("usuario") != null) {
+        response.sendRedirect("/");
+    }
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -48,6 +50,25 @@
             </div>
 
         </div>
+
+        <%
+            String errorMessage = (String) session.getAttribute("errorMessage");
+
+            if (errorMessage != null && !errorMessage.isEmpty()) {
+        %>
+
+        <script>
+
+            Swal.fire({
+                icon: 'error',
+                title: '<%=errorMessage%>'
+            })
+
+        </script>
+
+        <%
+            }
+        %>
 
     </body>
 </html>

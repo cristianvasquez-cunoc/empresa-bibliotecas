@@ -77,6 +77,7 @@
                         <li class="card-text">Biblioteca: <%=usuarioRec.getBiblioteca()%></li>
                         <li class="card-text">Codigo biblioteca: <%= usuarioRec.getBibliotecaCodigo()%></li>
                         <li class="card-text">Direccion: <%= usuarioRec.getDireccion()%></li>
+                        <li class="card-text">Estado: <%= usuarioRec.isActivo() ? "Activo" : "Inactivo"%></li>
                     </ul>
                     <div class="d-flex flex-column">
 

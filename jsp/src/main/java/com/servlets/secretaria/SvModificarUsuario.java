@@ -25,8 +25,48 @@ public class SvModificarUsuario extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setAttribute("usuarioModificadoExitosamente", false);
+        loadUsuario(request, response, request.getParameter("codigo"));
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         try {
-            int codigo = Integer.parseInt(request.getParameter("codigo"));
+            String codigo = request.getParameter("codigo");
+            String nombre = request.getParameter("nombre");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String email = request.getParameter("email");
+            String bibliotecaCodigo = request.getParameter("bibliotecas");
+            String activo = request.getParameter("estado");
+
+            DBUsuarioRecepcion recepcionDB = new DBUsuarioRecepcion();
+
+            if (password.isBlank()) {
+                recepcionDB.updateUsuarioRecepcion(nombre, username, email, codigo, bibliotecaCodigo, activo);
+            } else {
+                recepcionDB.updateUsuarioRecepcion(nombre, username, password, email, codigo, bibliotecaCodigo, activo);
+            }
+            
+                        request.setAttribute("usuarioModificadoExitosamente", true);
+
+            
+            loadUsuario(request, response, codigo);
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void loadUsuario(HttpServletRequest request, HttpServletResponse response, String codigoS)
+            throws ServletException, IOException {
+
+        try {
+
+            int codigo = Integer.parseInt(codigoS);
 
             DBUsuarioRecepcion recepcionDB = new DBUsuarioRecepcion();
             DBAdministracion adminDB = new DBAdministracion();
@@ -40,47 +80,9 @@ public class SvModificarUsuario extends HttpServlet {
             RequestDispatcher dispatcher = getServletContext()
                     .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/recepcion/modificar-usuario.jsp");
             dispatcher.forward(request, response);
-
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(SvModificarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int codigo;
-
-//        try {
-//            String isbn = request.getParameter("isbn");
-//            String nombre = request.getParameter("nombre");
-//            String autor = request.getParameter("autor");
-//            String costo = request.getParameter("costo");
-//            String categoria = request.getParameter("seleccionCategoria");
-//            String nombreCategoria = request.getParameter("nombreCategoria");
-//            String descripcionCategoria = request.getParameter("descripcionCategoria");
-//
-//            adminDB = new DBAdministracion();
-//
-//            if (categoria.equals("otra")) {
-//                codigo = adminDB.insertCategoria(nombreCategoria, descripcionCategoria);
-//            } else {
-//                codigo = Integer.parseInt(categoria);
-//            }
-//
-//            adminDB.updateLibro(isbn, nombre, autor, String.valueOf(codigo), costo);
-//
-//            ArrayList<Libro> libros = adminDB.getAllLibros();
-//            
-//        request.setAttribute("libros", libros);
-//        request.setAttribute("libroModificado", true);
-//            
-//            RequestDispatcher dispatcher = getServletContext()
-//                    .getRequestDispatcher(this.getServletContext().getContextPath() + "/admin/libros/");
-//            dispatcher.forward(request, response);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(SvAdminAgregarLibro.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
 }

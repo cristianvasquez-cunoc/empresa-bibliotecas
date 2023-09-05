@@ -7,16 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DBUsuarioRecepcion {
 
-    private final String SELECT_USUARIOS_RECEPCION = "select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca;";
-    private final String SELECT_USUARIOS_RECEPCION_CODIGO = "select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca WHERE u.codigo = ?;";
+    private final String SELECT_USUARIOS_RECEPCION = "select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion, u.activo from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca;";
+    private final String SELECT_USUARIOS_RECEPCION_CODIGO = "select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion, u.activo from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca WHERE u.codigo = ?;";
 
     private final String INSERT_USUARIO = "INSERT INTO usuario (nombre, username, password, email, rol) values (?, ?, ?, ?, ?)";
     private final String INSERT_USUARIO_RECEPCION = "INSERT INTO usuario_secretaria (codigo, biblioteca) values (?, ?)";
+    
+    private final String UPDATE_USUARIO_PASSWORD = "update usuario set nombre = ?, username = ?, password = ?, email = ?, activo = ? where codigo = ?;";
+    private final String UPDATE_USUARIO = "update usuario set nombre = ?, username = ?, email = ?, activo = ? where codigo = ?;";
+    private final String UPDATE_BIBLIOTECA_USUARIO = "update usuario_secretaria  set biblioteca = ? where  codigo = ?;";
 
     private Connection conexion;
 
@@ -40,7 +42,8 @@ public class DBUsuarioRecepcion {
                         Integer.parseInt(result.getString("codigo")),
                         result.getString("nombre"),
                         result.getString("username"),
-                        result.getString("email")
+                        result.getString("email"),
+                        Integer.parseInt(result.getString("activo"))
                 );
 
                 usuarios.add(usuarioR);
@@ -114,7 +117,8 @@ public class DBUsuarioRecepcion {
                     Integer.parseInt(result.getString("codigo")),
                     result.getString("nombre"),
                     result.getString("username"),
-                    result.getString("email")
+                    result.getString("email"),
+                    Integer.parseInt(result.getString("activo"))
             );
 
             return usRec;
@@ -125,4 +129,49 @@ public class DBUsuarioRecepcion {
             return null;
         }
     }
+    
+    public void updateUsuarioRecepcion(String nombre, String username, String password, String email, String codigo, String biblioteca, String activo){
+    
+        try {
+            PreparedStatement updateUsuario = conexion.prepareStatement(UPDATE_USUARIO_PASSWORD);
+            updateUsuario.setString(1, nombre);
+            updateUsuario.setString(2, username);
+            updateUsuario.setString(3, password);
+            updateUsuario.setString(4, email);
+            updateUsuario.setString(5, activo);
+            updateUsuario.setString(6, codigo);
+            updateUsuario.executeUpdate();
+            
+            PreparedStatement updateBiblioteca = conexion.prepareStatement(UPDATE_BIBLIOTECA_USUARIO);
+            updateBiblioteca.setString(1, biblioteca);
+            updateBiblioteca.setString(2, codigo);
+            updateBiblioteca.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    
+    };
+    
+    public void updateUsuarioRecepcion(String nombre, String username, String email, String codigo, String biblioteca, String activo){
+    
+        try {
+            PreparedStatement update = conexion.prepareStatement(UPDATE_USUARIO);
+            update.setString(1, nombre);
+            update.setString(2, username);
+            update.setString(3, email);
+            update.setString(4, activo);
+            update.setString(5, codigo);
+            update.executeUpdate();
+            
+            PreparedStatement updateBiblioteca = conexion.prepareStatement(UPDATE_BIBLIOTECA_USUARIO);
+            updateBiblioteca.setString(1, biblioteca);
+            updateBiblioteca.setString(2, codigo);
+            updateBiblioteca.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    
+    };
 }

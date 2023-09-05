@@ -8,14 +8,16 @@ public class Usuario {
     protected String password;
     protected String email;
     protected int rol;
+    protected int activo;
 
-    public Usuario(int codigo, String nombre, String username, String password, String email, int rol) {
+    public Usuario(int codigo, String nombre, String username, String password, String email, int rol, String activo) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.username = username;
         this.password = password;
         this.email = email;
         this.rol = rol;
+        this.activo = Integer.valueOf(activo);
     }
 
     public Usuario(int codigo, String nombre, String username, String email, int rol) {
@@ -26,12 +28,12 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public Usuario(int codigo, String nombre, String username, String email) {
+    public Usuario(int codigo, int activo, String nombre, String username, String email) {
         this.codigo = codigo;
+        this.activo = activo;
         this.nombre = nombre;
         this.username = username;
         this.email = email;
-        this.rol = rol;
     }
 
     public String getUsername() {
@@ -58,6 +60,8 @@ public class Usuario {
         return codigo;
     }
     
-    
+    public boolean isActivo() {
+        return activo == 1;
+    }
 
 }

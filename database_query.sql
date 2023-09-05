@@ -156,3 +156,12 @@ select * from categoria;
 insert into categoria (name, description) values ('Romance', 'Libros de historias de amor y relaciones.');
 
 select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca;
+
+update usuario set nombre = "Tyler", username = "tyler", password = "12345", email = "tyler@gmail.com" where codigo = 13;
+update usuario set nombre = "Tyler", username = "tyler",email = "tyler@gmail.com" where codigo = 13;
+
+update usuario_secretaria  set biblioteca = 6 where  codigo = 11;
+
+insert into usuario_secretaria (codigo, biblioteca) values (11, 3), (12,3);
+
+select * from usuario_secretaria ;

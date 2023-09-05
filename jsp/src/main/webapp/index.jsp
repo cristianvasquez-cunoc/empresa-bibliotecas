@@ -11,6 +11,9 @@
                 case 2:
                     response.sendRedirect("/admin/");
                     break;
+                case 3:
+                    response.sendRedirect("/recepcion/");
+                    break;
                 default:
                     throw new AssertionError();
             }
