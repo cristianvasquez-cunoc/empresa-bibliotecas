@@ -17,6 +17,14 @@ public class Libro {
         this.costo = costo;
         this.codigoCategoria = codigoCategoria;
     }
+    
+    public Libro(String isbn, String nombre, String autor, String categoria, double costo) {
+        this.isbn = isbn;
+        this.nombre = nombre;
+        this.autor = autor;
+        this.categoria = categoria;
+        this.costo = costo;
+    }
 
     public String getNombre() {
         return nombre;

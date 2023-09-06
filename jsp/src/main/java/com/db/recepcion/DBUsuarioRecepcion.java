@@ -1,21 +1,27 @@
 package com.db.usuario;
 
+import classes.Libro;
 import com.db.DB;
+import com.recepcion.LibroUnidades;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBUsuarioRecepcion {
 
     private final String SELECT_USUARIOS_RECEPCION = "select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion, u.activo from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca;";
     private final String SELECT_USUARIOS_RECEPCION_CODIGO = "select u.codigo, u.nombre, u.username, u.email, b.codigo as codigo_biblioteca, b.nombre as biblioteca, b.direccion, u.activo from usuario as u inner join usuario_secretaria as us on u.codigo = us.codigo inner join biblioteca as b on b.codigo = us.biblioteca WHERE u.codigo = ?;";
+    private final String SELECT_LIBROS_CON_EXISTENCIAS = "select l.isbn, l.nombre, l.autor, l.costo, c.name as categoria, ul.biblioteca, ul.unidades from libro as l inner join unidades_libro as ul inner join categoria as c on c.codigo = l.categoria where ul.biblioteca = ? and ul.unidades > 0 and l.isbn = ul.isbn;";
+    private final String SELECT_LIBROS_SIN_EXISTENCIAS = "select l.isbn, l.nombre, l.autor, l.costo, c.name as categoria, ul.biblioteca, ul.unidades from libro as l inner join unidades_libro as ul inner join categoria as c on c.codigo = l.categoria where ul.biblioteca = ? and ul.unidades = 0 and l.isbn = ul.isbn;";
 
     private final String INSERT_USUARIO = "INSERT INTO usuario (nombre, username, password, email, rol) values (?, ?, ?, ?, ?)";
     private final String INSERT_USUARIO_RECEPCION = "INSERT INTO usuario_secretaria (codigo, biblioteca) values (?, ?)";
-    
+
     private final String UPDATE_USUARIO_PASSWORD = "update usuario set nombre = ?, username = ?, password = ?, email = ?, activo = ? where codigo = ?;";
     private final String UPDATE_USUARIO = "update usuario set nombre = ?, username = ?, email = ?, activo = ? where codigo = ?;";
     private final String UPDATE_BIBLIOTECA_USUARIO = "update usuario_secretaria  set biblioteca = ? where  codigo = ?;";
@@ -94,7 +100,7 @@ public class DBUsuarioRecepcion {
         }
     }
 
-    public UsuarioRecepcion getUsuarioRecepcionCodigo (int codigo) {
+    public UsuarioRecepcion getUsuarioRecepcionCodigo(int codigo) {
         UsuarioRecepcion usRec;
 
         try {
@@ -129,9 +135,9 @@ public class DBUsuarioRecepcion {
             return null;
         }
     }
-    
-    public void updateUsuarioRecepcion(String nombre, String username, String password, String email, String codigo, String biblioteca, String activo){
-    
+
+    public void updateUsuarioRecepcion(String nombre, String username, String password, String email, String codigo, String biblioteca, String activo) {
+
         try {
             PreparedStatement updateUsuario = conexion.prepareStatement(UPDATE_USUARIO_PASSWORD);
             updateUsuario.setString(1, nombre);
@@ -141,7 +147,7 @@ public class DBUsuarioRecepcion {
             updateUsuario.setString(5, activo);
             updateUsuario.setString(6, codigo);
             updateUsuario.executeUpdate();
-            
+
             PreparedStatement updateBiblioteca = conexion.prepareStatement(UPDATE_BIBLIOTECA_USUARIO);
             updateBiblioteca.setString(1, biblioteca);
             updateBiblioteca.setString(2, codigo);
@@ -150,11 +156,13 @@ public class DBUsuarioRecepcion {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+
+    }
+
+    ;
     
-    };
-    
-    public void updateUsuarioRecepcion(String nombre, String username, String email, String codigo, String biblioteca, String activo){
-    
+    public void updateUsuarioRecepcion(String nombre, String username, String email, String codigo, String biblioteca, String activo) {
+
         try {
             PreparedStatement update = conexion.prepareStatement(UPDATE_USUARIO);
             update.setString(1, nombre);
@@ -163,7 +171,7 @@ public class DBUsuarioRecepcion {
             update.setString(4, activo);
             update.setString(5, codigo);
             update.executeUpdate();
-            
+
             PreparedStatement updateBiblioteca = conexion.prepareStatement(UPDATE_BIBLIOTECA_USUARIO);
             updateBiblioteca.setString(1, biblioteca);
             updateBiblioteca.setString(2, codigo);
@@ -172,6 +180,81 @@ public class DBUsuarioRecepcion {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+
+    }
+
+    ;
     
-    };
+    public ArrayList<LibroUnidades> getAllLibrosConExistencias(String codigoBiblioteca) {
+        ArrayList<LibroUnidades> libros = new ArrayList<>();
+
+        try {
+            PreparedStatement select = conexion.prepareStatement(SELECT_LIBROS_CON_EXISTENCIAS);
+            select.setString(1, codigoBiblioteca);
+            ResultSet result = select.executeQuery();
+
+            while (result.next()) {
+
+                LibroUnidades libro = new LibroUnidades(
+                        result.getString("isbn"),
+                        result.getString("nombre"),
+                        result.getString("autor"),
+                        result.getString("categoria"),
+                        Double.valueOf(result.getString("costo")),
+                        Integer.valueOf(result.getString("unidades"))
+                );
+
+                libros.add(libro);
+
+            }
+            return libros;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    public ArrayList<LibroUnidades> getAllLibrosSinExistencias(String codigoBiblioteca) {
+        ArrayList<LibroUnidades> libros = new ArrayList<>();
+
+        try {
+            PreparedStatement select = conexion.prepareStatement(SELECT_LIBROS_SIN_EXISTENCIAS);
+            select.setString(1, codigoBiblioteca);
+            ResultSet result = select.executeQuery();
+
+            while (result.next()) {
+
+                LibroUnidades libro = new LibroUnidades(
+                        result.getString("isbn"),
+                        result.getString("nombre"),
+                        result.getString("autor"),
+                        result.getString("categoria"),
+                        Double.valueOf(result.getString("costo")),
+                        Integer.valueOf(result.getString("unidades"))
+                );
+
+                libros.add(libro);
+
+            }
+            return libros;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getCodigoBiblioteca(int codigoUsuario) {
+        try {
+            PreparedStatement select = conexion.prepareStatement("select * from usuario_secretaria where codigo = ?");
+            select.setString(1, String.valueOf(codigoUsuario));
+            ResultSet result = select.executeQuery();
+
+            result.next();
+
+            return result.getString("biblioteca");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUsuarioRecepcion.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
+    }
 }

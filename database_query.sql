@@ -169,17 +169,30 @@ select * from usuario_secretaria ;
 -- agregar usuario final y la solicitud de revocacion de suspension
 insert into usuario (nombre, username, password, email, rol, activo) values ('Julian', 'julian', '12345', 'julian@gmail.com', 1, true);
 insert into usuario_final (codigo, suscrito, suspendido, saldo, fecha_suspension) values (27, false, true, 500, '2023-09-05 15:29:37');
-insert into revocacion_suspension (aprovada, codigo_usuario, fecha_suspension) values (false, 27, '2023-09-05 15:29:37');
+insert into revocacion_suspension (aprovada, codigo_usuario, fecha_suspension) values (false, 6, '2023-09-05 15:29:37'), (false, 25, '2023-09-03 15:29:37'),(false, 26, '2023-09-0 15:29:37');
 
 select * from revocacion_suspension;
 select * from usuario_final;
 
 update revocacion_suspension set fecha_suspension = '2023-09-01 14:30:00' where id = 4;
 
-select rs.id, rs.aprovada, rs.codigo_usuario, rs.fecha_suspension, rs.fecha_aprovacion, uf.suspendido, u.nombre, u.username from revocacion_suspension as rs inner join usuario_final as uf on rs.codigo_usuario = uf.codigo inner join usuario as u on uf.codigo = u.codigo; 
+select rs.id, rs.aprovada, rs.codigo_usuario, rs.fecha_suspension, rs.fecha_aprovacion, uf.suspendido, u.nombre, u.username from revocacion_suspension as rs inner join usuario_final as uf on rs.codigo_usuario = uf.codigo inner join usuario as u on uf.codigo = u.codigo  order by rs.aprovada ; 
 
 update revocacion_suspension set fecha_aprovacion = CURRENT_TIMESTAMP, aprovada = true where id = 4;
 update usuario_final set suspendido = false, fecha_suspension = null where codigo = 25;
+
+
+SELECT * FROM empresa_bibliotecas.unidades_libro;
+
+
+select l.isbn, l.nombre, l.autor, c.name as categoria, ul.biblioteca, ul.unidades from libro as l inner join unidades_libro as ul inner join categoria as c on c.codigo = l.categoria where ul.biblioteca = 1 and ul.unidades > 0 and l.isbn = ul.isbn;
+
+
+
+
+
+
+
 
 
 
