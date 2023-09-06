@@ -72,7 +72,7 @@
                     </ul>
                     <div class="d-flex flex-column">
 
-                        <a href="${pageContext.request.contextPath}/admin/libros/modificar?isbn=<%= libro.getIsbn()%>" type="button" class="btn btn-primary mb-3">
+                        <a href="${pageContext.request.contextPath}/recepcion/prestamo?isbn=<%= libro.getIsbn()%>" type="button" class="btn btn-primary mb-3">
                             Prestar
                         </a>
                     </div>
@@ -88,12 +88,12 @@
 
             <div class="card col-3 m-3">
                 <div class="card-body">
-                    <h4 class="card-title"><%= libro.getNombre()%></h4>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Autor/a: <%= libro.getAutor()%></h6>
+                    <h4 class="card-title text-muted"><%= libro.getNombre()%></h4>
+                    <h6 class="card-subtitle mb-2 text-body-secondary text-muted">Autor/a: <%= libro.getAutor()%></h6>
                     <ul>
-                        <li class="card-text">Categoría: <%= libro.getCategoria()%></li>
-                        <li class="card-text">ISBN: <%= libro.getIsbn()%></li>
-                        <li class="card-text">Costo: Q <%= libro.getCosto()%></li>
+                        <li class="card-text text-muted">Categoría: <%= libro.getCategoria()%></li>
+                        <li class="card-text text-muted">ISBN: <%= libro.getIsbn()%></li>
+                        <li class="card-text text-muted">Costo: Q <%= libro.getCosto()%></li>
                     </ul>
                         <p class="card-text text-warning">No hay unidades disponibles</p>
                     <div class="d-flex flex-column">
@@ -108,25 +108,6 @@
             
             
         </section>
-            <%
-                Boolean agregadoExitosamente = (Boolean) request.getAttribute("agregadoExitosamente");
-
-                if (agregadoExitosamente) {
-            %>
-
-            <script>
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'El usuario se agregó exitosamente',
-                    timer: 2000
-                })
-
-            </script>
-
-            <%
-                }
-            %>
             <script src="${pageContext.request.contextPath}/js/filtrarLibrosUnidades.js"></script>
     </body>
 </html>

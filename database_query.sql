@@ -187,9 +187,23 @@ SELECT * FROM empresa_bibliotecas.unidades_libro;
 
 select l.isbn, l.nombre, l.autor, c.name as categoria, ul.biblioteca, ul.unidades from libro as l inner join unidades_libro as ul inner join categoria as c on c.codigo = l.categoria where ul.biblioteca = 1 and ul.unidades > 0 and l.isbn = ul.isbn;
 
+CREATE TABLE prestamo (
+	codigo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    biblioteca INT NOT NULL,
+    recepcionista INT NOT NULL,
+    multa DOUBLE NOT NULL,
+    codigo_usuario INT NOT NULL,
+    isbn INT NOT NULL,
+    pendiente BOOLEAN NOT NULL,
+    FOREIGN KEY (biblioteca) references biblioteca(codigo),
+    FOREIGN KEY (recepcionista) references usuario_secretaria(codigo),
+    FOREIGN KEY (codigo_usuario) references usuario_final(codigo)
+);
 
+ALTER TABLE prestamo add column fecha_prestamo timestamp not null default CURRENT_TIMESTAMP;
+ALTER TABLE prestamo add column dias_prestamo int not null;
 
-
+ALTER TABLE prestamo add column fecha_devolucion TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL dias_prestamo DAY);
 
 
 
