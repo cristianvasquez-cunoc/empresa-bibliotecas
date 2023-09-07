@@ -218,6 +218,35 @@ FROM usuario_final AS uf
 JOIN prestamo AS p ON uf.codigo = p.codigo_usuario
 WHERE p.pendiente = 1;
 
+select * from prestamo;
+
+SELECT DATE_SUB(NOW(), INTERVAL 2 MONTH) AS date_two_months_ago;
+
+insert into prestamo  (biblioteca, recepcionista, multa, codigo_usuario, isbn, fecha_prestamo, dias_prestamo) values (2,9,50, 29,11,DATE_SUB(NOW(), INTERVAL 4 MONTH), 1);
+
+
+select * from prestamo;
+
+select u.nombre, u.username, u.email, uf.suscrito from usuario as u inner join usuario_final as uf on u.codigo = uf.codigo where u.rol = 1 and uf.suscrito = 1;
+
+SELECT * FROM empresa_bibliotecas.prestamo;
+
+SELECT u.codigo, COUNT(*) AS total_prestamos
+FROM prestamo AS p
+JOIN usuario_secretaria AS u ON u.codigo = p.codigo_usuario
+WHERE p.pendiente = 0
+GROUP BY u.codigo
+ORDER BY total_prestamos DESC
+LIMIT 5;
+
+select * from prestamo as p inner join usuario_secretaria as us on us.codigo = p.codigo_usuario where p.pendiente = 0;
+
+
+
+
+
+
+
 
 
 
