@@ -12,11 +12,11 @@
         response.sendRedirect("/");
 
     else {
-    
-    Libro libro = (Libro) request.getAttribute("libro");
-    UsuarioRecepcion usuarioR = (UsuarioRecepcion) request.getAttribute("usuarioR");
-    Biblioteca biblioteca = (Biblioteca) request.getAttribute("biblioteca");
-    double multa = (double) request.getAttribute("multa");
+
+        Libro libro = (Libro) request.getAttribute("libro");
+        UsuarioRecepcion usuarioR = (UsuarioRecepcion) request.getAttribute("usuarioR");
+        Biblioteca biblioteca = (Biblioteca) request.getAttribute("biblioteca");
+        double multa = (double) request.getAttribute("multa");
 %>
 
 <html>
@@ -65,7 +65,7 @@
             <hr/>
         </div>
 
-        <form method="POST" action="${pageContext.request.contextPath}/recepcion/prestamo" id="formRealizarPrestamo">
+        <form method="POST" action="${pageContext.request.contextPath}/recepcion/prestamo?isbn=<%=libro.getIsbn()%>&biblioteca=<%=biblioteca.getCodigo()%>&recepcionista=<%=usuarioR.getCodigo()%>" id="formRealizarPrestamo">
 
             <div class="mb-3">
                 <label for="username" class="form-label">Username usuario</label>
@@ -78,6 +78,7 @@
             <button type="submit" class="btn btn-primary">Realizar prestamo</button>
         </form>
     </section>
+    
 </html>
 
 <%

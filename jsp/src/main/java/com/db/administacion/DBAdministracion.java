@@ -5,6 +5,8 @@ import classes.Categoria;
 import classes.Libro;
 import classes.UnidadesLibroBiblioteca;
 import com.db.DB;
+import com.db.usuario.Usuario;
+import com.usuariofinal.UsuarioFinal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -287,7 +289,7 @@ public class DBAdministracion {
             return null;
         }
     }
-    
+
     public double getMulta() {
         try {
             PreparedStatement select = conexion.prepareStatement("SELECT multa FROM administracion where id=1;");
@@ -300,7 +302,60 @@ public class DBAdministracion {
             Logger.getLogger(DBAdministracion.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
-        
+
+    }
+
+    public String getSystemParameter(String column) {
+        try {
+            String sql = "SELECT " + column + " FROM administracion WHERE id = 1;";
+            PreparedStatement select = conexion.prepareStatement(sql);
+            ResultSet result = select.executeQuery();
+
+            result.next();
+
+            return result.getString(column);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAdministracion.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public UsuarioFinal getUsuarioFinalByUsername(String username) {
+        UsuarioFinal us = null;
+        String query = "SELECT usf.suscrito, usf.suspendido, usf.saldo, usf.fecha_suspension, us.codigo, us.nombre, us.username, us.email, us.activo "
+                + "FROM usuario AS us "
+                + "INNER JOIN usuario_final AS usf ON usf.codigo = us.codigo "
+                + "WHERE us.username = ? AND us.rol = 1;";
+
+        try (PreparedStatement select = conexion.prepareStatement(query)) {
+            select.setString(1, username);
+            ResultSet result = select.executeQuery();
+
+            if (!result.isBeforeFirst()) {
+                return null;
+            } else {
+                result.next();
+
+                us = new UsuarioFinal(
+                        result.getBoolean("suscrito"),
+                        result.getBoolean("suspendido"),
+                        result.getDouble("saldo"),
+                        result.getDate("fecha_suspension"),
+                        result.getInt("codigo"),
+                        result.getString("nombre"),
+                        result.getString("username"),
+                        "",
+                        result.getString("email"),
+                        1,
+                        result.getString("activo")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return us;
     }
 
 }

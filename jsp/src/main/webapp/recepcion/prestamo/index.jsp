@@ -45,7 +45,7 @@
                             <label class="form-check-label" for="mostrarSoloDisponiblesBiblioteca">Mostrar solo disponibles en la biblioteca</label>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
                         <li class="card-text text-muted">ISBN: <%= libro.getIsbn()%></li>
                         <li class="card-text text-muted">Costo: Q <%= libro.getCosto()%></li>
                     </ul>
-                        <p class="card-text text-warning">No hay unidades disponibles</p>
+                    <p class="card-text text-warning">No hay unidades disponibles</p>
                     <div class="d-flex flex-column">
 
                         <a href="${pageContext.request.contextPath}/recepcion/prestamo/unidades-libros?isbn=<%= libro.getIsbn()%>" type="button" class="btn btn-secondary mb-3">
@@ -105,10 +105,43 @@
                 </div>
             </div>
             <%}%>
-            
-            
+
+
         </section>
-            <script src="${pageContext.request.contextPath}/js/filtrarLibrosUnidades.js"></script>
+        <script src="${pageContext.request.contextPath}/js/filtrarLibrosUnidades.js"></script>
+        <script>
+            <%
+                String errorMsg = (String) request.getAttribute("errorMsg");
+                boolean primeraVez = (boolean) request.getAttribute("primeraVez");
+
+                if ((errorMsg == null || errorMsg.isEmpty()) && !primeraVez) {
+                
+                String descripcionPrestamo = (String) request.getAttribute("descripcionPrestamo");
+
+
+            %>
+            Swal.fire(
+                    'El prestamo se ha realizado correctamente!',
+                    '<p><%=descripcionPrestamo%></p>',
+                    'success'
+                    );
+            <%                } else if ((errorMsg != null || !errorMsg.isEmpty()) && !primeraVez) {
+
+            %>
+            Swal.fire(
+                    'Ha ocurrido un error!',
+                    '<p><%=errorMsg%></p>',
+                    'error'
+                    );
+            <%
+
+                }
+                request.setAttribute("primeraVez", true);
+            %>
+
+
+
+        </script>
     </body>
 </html>
 

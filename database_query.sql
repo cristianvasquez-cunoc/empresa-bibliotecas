@@ -205,9 +205,18 @@ ALTER TABLE prestamo add column dias_prestamo int not null;
 
 ALTER TABLE prestamo add column fecha_devolucion TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL dias_prestamo DAY);
 
+ALTER TABLE prestamo modify pendiente boolean NOT NULL DEFAULT 1;
 
+select usf.suscrito, usf.suspendido, usf.saldo, usf.fecha_suspension, us.codigo, us.nombre, us.username, us.email, us.activo from usuario as us inner join usuario_final as usf on usf.codigo = us.codigo where us.username = 'recepcion' and us.rol = 1 ;
 
+INSERT INTO prestamo (biblioteca, recepcionista, multa, codigo_usuario, isbn, dias_prestamo) values
+(1, 8, '50.0', 6, 1, 5);
+UPDATE unidades_libro set unidades = unidades - 1 where biblioteca = 1 and isbn = 1;
 
+SELECT *
+FROM usuario_final AS uf
+JOIN prestamo AS p ON uf.codigo = p.codigo_usuario
+WHERE p.pendiente = 1;
 
 
 
